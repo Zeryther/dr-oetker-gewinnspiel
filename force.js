@@ -42,7 +42,7 @@ const open = require('sqlite').open;
 		return result;
 	}
 
-	let limit = 10000
+	let limit = 5000
 
 	while (limit > 0) {
 		const successfulPath = "./successfulCode.txt"
