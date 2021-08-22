@@ -1,0 +1,11 @@
+{
+	"name": "oetker",
+	"version": "1.0.0",
+	"description": "",
+	"main": "force.js",
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"node-fetch": "^2.6.1"
+	}
+}
