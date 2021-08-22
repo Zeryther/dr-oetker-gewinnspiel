@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 const sqlite3 = require('sqlite3');
+const fs = require('fs')
 const open = require('sqlite').open;
 
 (async () => {
@@ -41,9 +42,15 @@ const open = require('sqlite').open;
 		return result;
 	}
 
-	let limit = 10
+	let limit = 100
 
 	while(limit > 0) {
+		const successfulPath = "./successfulCode.txt"
+		if(fs.existsSync(successfulPath)) {
+			console.log("Successful code has already been found.")
+			return
+		}
+
 		const code = await randomCode()
 
 		console.log("Trying code: " + code)
@@ -77,7 +84,10 @@ const open = require('sqlite').open;
 			await db.exec('INSERT INTO `codes` (`code`) VALUES(\'' + code + '\');');
 		} else {
 			console.log("Unexpected code state!")
-			console.log(body)
+			console.log("Response has been stored to successfulCode.txt")
+
+			fs.writeFileSync("./successfulCode.txt", code + '\n\n' + body);
+
 			return
 		}
 
