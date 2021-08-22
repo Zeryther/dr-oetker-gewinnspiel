@@ -24,7 +24,7 @@ const open = require('sqlite').open;
 	async function randomCode() {
 		let result = '';
 
-		while(result === '') {
+		while (result === '') {
 			const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 			const charactersLength = characters.length;
 
@@ -34,7 +34,7 @@ const open = require('sqlite').open;
 			}
 
 			const a = await db.get("SELECT COUNT(code) as count FROM codes WHERE code = '" + result + "'")
-			if(a.count > 0) {
+			if (a.count > 0) {
 				result = ''
 			}
 		}
@@ -42,11 +42,11 @@ const open = require('sqlite').open;
 		return result;
 	}
 
-	let limit = 100
+	let limit = 10000
 
-	while(limit > 0) {
+	while (limit > 0) {
 		const successfulPath = "./successfulCode.txt"
-		if(fs.existsSync(successfulPath)) {
+		if (fs.existsSync(successfulPath)) {
 			console.log("Successful code has already been found.")
 			return
 		}
@@ -81,7 +81,7 @@ const open = require('sqlite').open;
 
 		if (body.includes("Der eingegebene Code ist nicht gültig oder bereits verwendet worden.")) {
 			console.error("Code is invalid.")
-			await db.exec('INSERT INTO `codes` (`code`) VALUES(\'' + code + '\');');
+			db.exec('INSERT INTO `codes` (`code`) VALUES(\'' + code + '\');').catch(reason => console.warn("Failed to insert code " + code + ": " + reason))
 		} else {
 			console.log("Unexpected code state!")
 			console.log("Response has been stored to successfulCode.txt")
